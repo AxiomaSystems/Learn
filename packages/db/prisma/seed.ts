@@ -97,6 +97,8 @@ async function main() {
     });
   }
 
+  await prisma.notification.deleteMany({});
+
   await prisma.submission.upsert({
     where: { id: "44444444-4444-4444-4444-444444444441" },
     update: {
@@ -192,6 +194,28 @@ async function main() {
       topic: "Signal amplification worksheet",
       status: BookingStatus.BOOKED,
     },
+  });
+
+  await prisma.notification.createMany({
+    data: [
+      {
+        institutionId: institution.id,
+        recipientUserId: student.id,
+        level: "SUCCESS",
+        title: "Your submission was returned",
+        body: "Reading 4.2 now includes a score and feedback from your educator.",
+        href: "/student/submissions",
+      },
+      {
+        institutionId: institution.id,
+        recipientUserId: educator.id,
+        level: "INFO",
+        title: "A submission is ready for review",
+        body: "Problem Set 3 has a clean file package and can be reviewed.",
+        href: "/educator/submissions",
+      },
+    ],
+    skipDuplicates: false,
   });
 }
 

@@ -44,6 +44,13 @@ enum BookingStatus {
   COMPLETED
 }
 
+enum NotificationLevel {
+  INFO
+  SUCCESS
+  WARNING
+  CRITICAL
+}
+
 model Institution {
   id        String   @id @default(uuid())
   name      String
@@ -72,6 +79,7 @@ model User {
   createdOfficeHourSlots    OfficeHourSlot[]   @relation("EducatorOfficeHours")
   auditEvents               AuditEvent[]
   aiInteractions            AIInteraction[]
+  notifications             Notification[]
 }
 
 model Class {
@@ -194,4 +202,18 @@ model AIInteraction {
   createdAt     DateTime @default(now())
 
   actor User @relation(fields: [actorUserId], references: [id], onDelete: Cascade)
+}
+
+model Notification {
+  id              String            @id @default(uuid())
+  institutionId   String
+  recipientUserId String
+  level           NotificationLevel @default(INFO)
+  title           String
+  body            String
+  href            String?
+  readAt          DateTime?
+  createdAt       DateTime          @default(now())
+
+  recipient User @relation(fields: [recipientUserId], references: [id], onDelete: Cascade)
 }

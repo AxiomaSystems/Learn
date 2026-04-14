@@ -11,6 +11,7 @@ export const navByView: Record<PortalView, NavItem[]> = {
     { href: "/student", label: "Home" },
     { href: "/student/classes", label: "Classes" },
     { href: "/student/submissions", label: "Submissions" },
+    { href: "/student/notifications", label: "Notifications" },
     { href: "/student/calendar", label: "Calendar" },
   ],
   educator: [
@@ -19,6 +20,7 @@ export const navByView: Record<PortalView, NavItem[]> = {
     { href: "/educator/review-queue", label: "Review queue" },
     { href: "/educator/classes", label: "Classes" },
     { href: "/educator/submissions", label: "Submissions" },
+    { href: "/educator/notifications", label: "Notifications" },
   ],
   admin: [
     { href: "/", label: "Overview" },

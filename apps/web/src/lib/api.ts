@@ -2,6 +2,7 @@ import type {
   AppHealth,
   EducatorCourseworkDetail,
   EducatorClassesDirectory,
+  NotificationsInbox,
   EducatorReviewQueueSummary,
   EducatorSubmissionsSummary,
   FileModerationQueue,
@@ -436,6 +437,68 @@ export async function getFileModerationQueue(): Promise<{
         error instanceof Error
           ? error.message
           : "Unknown file moderation queue connectivity error",
+    };
+  }
+}
+
+export async function getStudentNotifications(): Promise<{
+  data: NotificationsInbox | null;
+  error: string | null;
+}> {
+  try {
+    const response = await fetch(`${getApiBaseUrl()}/api/student/notifications`, {
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      return {
+        data: null,
+        error: `Student notifications returned ${response.status}`,
+      };
+    }
+
+    return {
+      data: (await response.json()) as NotificationsInbox,
+      error: null,
+    };
+  } catch (error) {
+    return {
+      data: null,
+      error:
+        error instanceof Error
+          ? error.message
+          : "Unknown student notifications connectivity error",
+    };
+  }
+}
+
+export async function getEducatorNotifications(): Promise<{
+  data: NotificationsInbox | null;
+  error: string | null;
+}> {
+  try {
+    const response = await fetch(`${getApiBaseUrl()}/api/educator/notifications`, {
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      return {
+        data: null,
+        error: `Educator notifications returned ${response.status}`,
+      };
+    }
+
+    return {
+      data: (await response.json()) as NotificationsInbox,
+      error: null,
+    };
+  } catch (error) {
+    return {
+      data: null,
+      error:
+        error instanceof Error
+          ? error.message
+          : "Unknown educator notifications connectivity error",
     };
   }
 }

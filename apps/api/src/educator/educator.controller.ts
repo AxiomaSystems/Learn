@@ -17,6 +17,7 @@ import type {
 } from "@axioma/domain";
 import { z } from "zod";
 import { PrismaService } from "../db/prisma.service";
+import { NotificationsService } from "../notifications/notifications.service";
 import { StorageService } from "../storage/storage.service";
 
 const FALLBACK_EDUCATOR_REVIEW_QUEUE: EducatorReviewQueueSummary = {
@@ -244,6 +245,7 @@ function toSubmissionFileSummary(
 export class EducatorController {
   constructor(
     private readonly prisma: PrismaService,
+    private readonly notificationsService: NotificationsService,
     private readonly storageService: StorageService,
   ) {}
 
@@ -575,6 +577,17 @@ export class EducatorController {
         },
       },
     });
+
+    if (nextStatus === "RETURNED") {
+      await this.notificationsService.createNotification({
+        institutionId: educator.institutionId,
+        recipientUserId: existingSubmission.studentId,
+        level: "SUCCESS",
+        title: "Your submission was returned",
+        body: `Your work for ${existingSubmission.coursework.title} now includes a score and written feedback.`,
+        href: "/student/submissions",
+      });
+    }
 
     return {
       ok: true,

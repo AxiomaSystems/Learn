@@ -3,6 +3,7 @@ import { ConfigService } from "@nestjs/config";
 import { Job, Queue, QueueEvents, Worker } from "bullmq";
 import IORedis from "ioredis";
 import { PrismaService } from "../db/prisma.service";
+import { NotificationsService } from "../notifications/notifications.service";
 
 type FileScanJobPayload = {
   submissionId: string;
@@ -30,6 +31,7 @@ export class FileScanService implements OnModuleInit, OnModuleDestroy {
   constructor(
     private readonly configService: ConfigService,
     private readonly prisma: PrismaService,
+    private readonly notificationsService: NotificationsService,
   ) {}
 
   async onModuleInit() {
@@ -126,6 +128,7 @@ export class FileScanService implements OnModuleInit, OnModuleDestroy {
         id: job.submissionId,
       },
       include: {
+        student: true,
         coursework: {
           include: {
             class: true,
@@ -179,6 +182,54 @@ export class FileScanService implements OnModuleInit, OnModuleDestroy {
           completedAt: scannedAt.toISOString(),
         },
       },
+    });
+
+    await this.notificationsService.createNotification({
+      institutionId: submission.coursework.class.institutionId,
+      recipientUserId: submission.studentId,
+      level:
+        decision.status === "CLEAN"
+          ? "SUCCESS"
+          : decision.status === "QUARANTINED"
+            ? "WARNING"
+            : "CRITICAL",
+      title:
+        decision.status === "CLEAN"
+          ? "Your file passed automated scanning"
+          : decision.status === "QUARANTINED"
+            ? "Your file was quarantined for review"
+            : "Your file was rejected",
+      body:
+        decision.status === "CLEAN"
+          ? `The upload for ${submission.coursework.title} is now available for educator review.`
+          : decision.status === "QUARANTINED"
+            ? `The upload for ${submission.coursework.title} matched a suspicious pattern and is being held for admin review.`
+            : `The upload for ${submission.coursework.title} used a blocked file type and must be replaced.`,
+      href: `/student/coursework/${submission.courseworkId}`,
+    });
+
+    await this.notificationsService.createNotification({
+      institutionId: submission.coursework.class.institutionId,
+      recipientUserId: submission.coursework.class.educatorId,
+      level:
+        decision.status === "CLEAN"
+          ? "INFO"
+          : decision.status === "QUARANTINED"
+            ? "WARNING"
+            : "WARNING",
+      title:
+        decision.status === "CLEAN"
+          ? "A submission file is ready for review"
+          : decision.status === "QUARANTINED"
+            ? "A submission file was quarantined"
+            : "A submission file was rejected",
+      body:
+        decision.status === "CLEAN"
+          ? `${submission.student.fullName} submitted a clean file for ${submission.coursework.title}.`
+          : decision.status === "QUARANTINED"
+            ? `A file for ${submission.coursework.title} was quarantined before educator review.`
+            : `A file for ${submission.coursework.title} was rejected before educator review.`,
+      href: `/educator/coursework/${submission.courseworkId}`,
     });
   }
 

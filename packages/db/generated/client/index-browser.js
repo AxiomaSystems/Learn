@@ -235,6 +235,18 @@ exports.Prisma.AIInteractionScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.NotificationScalarFieldEnum = {
+  id: 'id',
+  institutionId: 'institutionId',
+  recipientUserId: 'recipientUserId',
+  level: 'level',
+  title: 'title',
+  body: 'body',
+  href: 'href',
+  readAt: 'readAt',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -296,6 +308,13 @@ exports.BookingStatus = exports.$Enums.BookingStatus = {
   COMPLETED: 'COMPLETED'
 };
 
+exports.NotificationLevel = exports.$Enums.NotificationLevel = {
+  INFO: 'INFO',
+  SUCCESS: 'SUCCESS',
+  WARNING: 'WARNING',
+  CRITICAL: 'CRITICAL'
+};
+
 exports.Prisma.ModelName = {
   Institution: 'Institution',
   User: 'User',
@@ -306,7 +325,8 @@ exports.Prisma.ModelName = {
   OfficeHourSlot: 'OfficeHourSlot',
   OfficeHourBooking: 'OfficeHourBooking',
   AuditEvent: 'AuditEvent',
-  AIInteraction: 'AIInteraction'
+  AIInteraction: 'AIInteraction',
+  Notification: 'Notification'
 };
 
 /**

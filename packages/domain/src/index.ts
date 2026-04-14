@@ -6,6 +6,7 @@ export * from "./models/coursework-handoff";
 export * from "./models/educator-review";
 export * from "./models/file-moderation";
 export * from "./models/institution";
+export * from "./models/notifications";
 export * from "./models/platform";
 export * from "./models/student-home";
 export * from "./models/submission-review";
