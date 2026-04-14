@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { fileScanStatusSchema } from "./coursework-handoff";
 
 export const submissionLifecycleStatusSchema = z.enum([
   "draft",
@@ -20,6 +21,7 @@ export const studentSubmissionSummaryItemSchema = z.object({
   gradeScore: z.number().int().min(0).max(100).nullable(),
   feedbackText: z.string().nullable(),
   gradedAt: z.string().datetime().nullable(),
+  fileScanStatus: fileScanStatusSchema.nullable(),
 });
 
 export const studentSubmissionsSummarySchema = z.object({
@@ -46,6 +48,7 @@ export const educatorSubmissionReviewItemSchema = z.object({
   feedbackText: z.string().nullable(),
   gradedAt: z.string().datetime().nullable(),
   reviewPriority: z.enum(["high", "medium", "low"]),
+  fileScanStatus: fileScanStatusSchema.nullable(),
 });
 
 export const educatorSubmissionsSummarySchema = z.object({

@@ -100,6 +100,16 @@ export const SubmissionStatus: {
 export type SubmissionStatus = (typeof SubmissionStatus)[keyof typeof SubmissionStatus]
 
 
+export const FileScanStatus: {
+  PENDING_SCAN: 'PENDING_SCAN',
+  CLEAN: 'CLEAN',
+  QUARANTINED: 'QUARANTINED',
+  REJECTED: 'REJECTED'
+};
+
+export type FileScanStatus = (typeof FileScanStatus)[keyof typeof FileScanStatus]
+
+
 export const BookingStatus: {
   BOOKED: 'BOOKED',
   CANCELLED: 'CANCELLED',
@@ -121,6 +131,10 @@ export const CourseworkKind: typeof $Enums.CourseworkKind
 export type SubmissionStatus = $Enums.SubmissionStatus
 
 export const SubmissionStatus: typeof $Enums.SubmissionStatus
+
+export type FileScanStatus = $Enums.FileScanStatus
+
+export const FileScanStatus: typeof $Enums.FileScanStatus
 
 export type BookingStatus = $Enums.BookingStatus
 
@@ -7830,6 +7844,9 @@ export namespace Prisma {
     fileName: string | null
     mimeType: string | null
     fileSizeBytes: number | null
+    fileScanStatus: $Enums.FileScanStatus | null
+    scannedAt: Date | null
+    scanNotes: string | null
     gradeScore: number | null
     feedbackText: string | null
     submittedAt: Date | null
@@ -7847,6 +7864,9 @@ export namespace Prisma {
     fileName: string | null
     mimeType: string | null
     fileSizeBytes: number | null
+    fileScanStatus: $Enums.FileScanStatus | null
+    scannedAt: Date | null
+    scanNotes: string | null
     gradeScore: number | null
     feedbackText: string | null
     submittedAt: Date | null
@@ -7864,6 +7884,9 @@ export namespace Prisma {
     fileName: number
     mimeType: number
     fileSizeBytes: number
+    fileScanStatus: number
+    scannedAt: number
+    scanNotes: number
     gradeScore: number
     feedbackText: number
     submittedAt: number
@@ -7893,6 +7916,9 @@ export namespace Prisma {
     fileName?: true
     mimeType?: true
     fileSizeBytes?: true
+    fileScanStatus?: true
+    scannedAt?: true
+    scanNotes?: true
     gradeScore?: true
     feedbackText?: true
     submittedAt?: true
@@ -7910,6 +7936,9 @@ export namespace Prisma {
     fileName?: true
     mimeType?: true
     fileSizeBytes?: true
+    fileScanStatus?: true
+    scannedAt?: true
+    scanNotes?: true
     gradeScore?: true
     feedbackText?: true
     submittedAt?: true
@@ -7927,6 +7956,9 @@ export namespace Prisma {
     fileName?: true
     mimeType?: true
     fileSizeBytes?: true
+    fileScanStatus?: true
+    scannedAt?: true
+    scanNotes?: true
     gradeScore?: true
     feedbackText?: true
     submittedAt?: true
@@ -8031,6 +8063,9 @@ export namespace Prisma {
     fileName: string | null
     mimeType: string | null
     fileSizeBytes: number | null
+    fileScanStatus: $Enums.FileScanStatus | null
+    scannedAt: Date | null
+    scanNotes: string | null
     gradeScore: number | null
     feedbackText: string | null
     submittedAt: Date | null
@@ -8067,6 +8102,9 @@ export namespace Prisma {
     fileName?: boolean
     mimeType?: boolean
     fileSizeBytes?: boolean
+    fileScanStatus?: boolean
+    scannedAt?: boolean
+    scanNotes?: boolean
     gradeScore?: boolean
     feedbackText?: boolean
     submittedAt?: boolean
@@ -8086,6 +8124,9 @@ export namespace Prisma {
     fileName?: boolean
     mimeType?: boolean
     fileSizeBytes?: boolean
+    fileScanStatus?: boolean
+    scannedAt?: boolean
+    scanNotes?: boolean
     gradeScore?: boolean
     feedbackText?: boolean
     submittedAt?: boolean
@@ -8105,6 +8146,9 @@ export namespace Prisma {
     fileName?: boolean
     mimeType?: boolean
     fileSizeBytes?: boolean
+    fileScanStatus?: boolean
+    scannedAt?: boolean
+    scanNotes?: boolean
     gradeScore?: boolean
     feedbackText?: boolean
     submittedAt?: boolean
@@ -8124,6 +8168,9 @@ export namespace Prisma {
     fileName?: boolean
     mimeType?: boolean
     fileSizeBytes?: boolean
+    fileScanStatus?: boolean
+    scannedAt?: boolean
+    scanNotes?: boolean
     gradeScore?: boolean
     feedbackText?: boolean
     submittedAt?: boolean
@@ -8132,7 +8179,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type SubmissionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "courseworkId" | "studentId" | "status" | "storageKey" | "fileName" | "mimeType" | "fileSizeBytes" | "gradeScore" | "feedbackText" | "submittedAt" | "gradedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["submission"]>
+  export type SubmissionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "courseworkId" | "studentId" | "status" | "storageKey" | "fileName" | "mimeType" | "fileSizeBytes" | "fileScanStatus" | "scannedAt" | "scanNotes" | "gradeScore" | "feedbackText" | "submittedAt" | "gradedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["submission"]>
   export type SubmissionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     coursework?: boolean | CourseworkDefaultArgs<ExtArgs>
     student?: boolean | UserDefaultArgs<ExtArgs>
@@ -8161,6 +8208,9 @@ export namespace Prisma {
       fileName: string | null
       mimeType: string | null
       fileSizeBytes: number | null
+      fileScanStatus: $Enums.FileScanStatus | null
+      scannedAt: Date | null
+      scanNotes: string | null
       gradeScore: number | null
       feedbackText: string | null
       submittedAt: Date | null
@@ -8600,6 +8650,9 @@ export namespace Prisma {
     readonly fileName: FieldRef<"Submission", 'String'>
     readonly mimeType: FieldRef<"Submission", 'String'>
     readonly fileSizeBytes: FieldRef<"Submission", 'Int'>
+    readonly fileScanStatus: FieldRef<"Submission", 'FileScanStatus'>
+    readonly scannedAt: FieldRef<"Submission", 'DateTime'>
+    readonly scanNotes: FieldRef<"Submission", 'String'>
     readonly gradeScore: FieldRef<"Submission", 'Int'>
     readonly feedbackText: FieldRef<"Submission", 'String'>
     readonly submittedAt: FieldRef<"Submission", 'DateTime'>
@@ -13526,6 +13579,9 @@ export namespace Prisma {
     fileName: 'fileName',
     mimeType: 'mimeType',
     fileSizeBytes: 'fileSizeBytes',
+    fileScanStatus: 'fileScanStatus',
+    scannedAt: 'scannedAt',
+    scanNotes: 'scanNotes',
     gradeScore: 'gradeScore',
     feedbackText: 'feedbackText',
     submittedAt: 'submittedAt',
@@ -13719,6 +13775,20 @@ export namespace Prisma {
    * Reference to a field of type 'Int[]'
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'FileScanStatus'
+   */
+  export type EnumFileScanStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FileScanStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'FileScanStatus[]'
+   */
+  export type ListEnumFileScanStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FileScanStatus[]'>
     
 
 
@@ -14151,6 +14221,9 @@ export namespace Prisma {
     fileName?: StringNullableFilter<"Submission"> | string | null
     mimeType?: StringNullableFilter<"Submission"> | string | null
     fileSizeBytes?: IntNullableFilter<"Submission"> | number | null
+    fileScanStatus?: EnumFileScanStatusNullableFilter<"Submission"> | $Enums.FileScanStatus | null
+    scannedAt?: DateTimeNullableFilter<"Submission"> | Date | string | null
+    scanNotes?: StringNullableFilter<"Submission"> | string | null
     gradeScore?: IntNullableFilter<"Submission"> | number | null
     feedbackText?: StringNullableFilter<"Submission"> | string | null
     submittedAt?: DateTimeNullableFilter<"Submission"> | Date | string | null
@@ -14170,6 +14243,9 @@ export namespace Prisma {
     fileName?: SortOrderInput | SortOrder
     mimeType?: SortOrderInput | SortOrder
     fileSizeBytes?: SortOrderInput | SortOrder
+    fileScanStatus?: SortOrderInput | SortOrder
+    scannedAt?: SortOrderInput | SortOrder
+    scanNotes?: SortOrderInput | SortOrder
     gradeScore?: SortOrderInput | SortOrder
     feedbackText?: SortOrderInput | SortOrder
     submittedAt?: SortOrderInput | SortOrder
@@ -14192,6 +14268,9 @@ export namespace Prisma {
     fileName?: StringNullableFilter<"Submission"> | string | null
     mimeType?: StringNullableFilter<"Submission"> | string | null
     fileSizeBytes?: IntNullableFilter<"Submission"> | number | null
+    fileScanStatus?: EnumFileScanStatusNullableFilter<"Submission"> | $Enums.FileScanStatus | null
+    scannedAt?: DateTimeNullableFilter<"Submission"> | Date | string | null
+    scanNotes?: StringNullableFilter<"Submission"> | string | null
     gradeScore?: IntNullableFilter<"Submission"> | number | null
     feedbackText?: StringNullableFilter<"Submission"> | string | null
     submittedAt?: DateTimeNullableFilter<"Submission"> | Date | string | null
@@ -14211,6 +14290,9 @@ export namespace Prisma {
     fileName?: SortOrderInput | SortOrder
     mimeType?: SortOrderInput | SortOrder
     fileSizeBytes?: SortOrderInput | SortOrder
+    fileScanStatus?: SortOrderInput | SortOrder
+    scannedAt?: SortOrderInput | SortOrder
+    scanNotes?: SortOrderInput | SortOrder
     gradeScore?: SortOrderInput | SortOrder
     feedbackText?: SortOrderInput | SortOrder
     submittedAt?: SortOrderInput | SortOrder
@@ -14236,6 +14318,9 @@ export namespace Prisma {
     fileName?: StringNullableWithAggregatesFilter<"Submission"> | string | null
     mimeType?: StringNullableWithAggregatesFilter<"Submission"> | string | null
     fileSizeBytes?: IntNullableWithAggregatesFilter<"Submission"> | number | null
+    fileScanStatus?: EnumFileScanStatusNullableWithAggregatesFilter<"Submission"> | $Enums.FileScanStatus | null
+    scannedAt?: DateTimeNullableWithAggregatesFilter<"Submission"> | Date | string | null
+    scanNotes?: StringNullableWithAggregatesFilter<"Submission"> | string | null
     gradeScore?: IntNullableWithAggregatesFilter<"Submission"> | number | null
     feedbackText?: StringNullableWithAggregatesFilter<"Submission"> | string | null
     submittedAt?: DateTimeNullableWithAggregatesFilter<"Submission"> | Date | string | null
@@ -14938,6 +15023,9 @@ export namespace Prisma {
     fileName?: string | null
     mimeType?: string | null
     fileSizeBytes?: number | null
+    fileScanStatus?: $Enums.FileScanStatus | null
+    scannedAt?: Date | string | null
+    scanNotes?: string | null
     gradeScore?: number | null
     feedbackText?: string | null
     submittedAt?: Date | string | null
@@ -14957,6 +15045,9 @@ export namespace Prisma {
     fileName?: string | null
     mimeType?: string | null
     fileSizeBytes?: number | null
+    fileScanStatus?: $Enums.FileScanStatus | null
+    scannedAt?: Date | string | null
+    scanNotes?: string | null
     gradeScore?: number | null
     feedbackText?: string | null
     submittedAt?: Date | string | null
@@ -14972,6 +15063,9 @@ export namespace Prisma {
     fileName?: NullableStringFieldUpdateOperationsInput | string | null
     mimeType?: NullableStringFieldUpdateOperationsInput | string | null
     fileSizeBytes?: NullableIntFieldUpdateOperationsInput | number | null
+    fileScanStatus?: NullableEnumFileScanStatusFieldUpdateOperationsInput | $Enums.FileScanStatus | null
+    scannedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scanNotes?: NullableStringFieldUpdateOperationsInput | string | null
     gradeScore?: NullableIntFieldUpdateOperationsInput | number | null
     feedbackText?: NullableStringFieldUpdateOperationsInput | string | null
     submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -14991,6 +15085,9 @@ export namespace Prisma {
     fileName?: NullableStringFieldUpdateOperationsInput | string | null
     mimeType?: NullableStringFieldUpdateOperationsInput | string | null
     fileSizeBytes?: NullableIntFieldUpdateOperationsInput | number | null
+    fileScanStatus?: NullableEnumFileScanStatusFieldUpdateOperationsInput | $Enums.FileScanStatus | null
+    scannedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scanNotes?: NullableStringFieldUpdateOperationsInput | string | null
     gradeScore?: NullableIntFieldUpdateOperationsInput | number | null
     feedbackText?: NullableStringFieldUpdateOperationsInput | string | null
     submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -15008,6 +15105,9 @@ export namespace Prisma {
     fileName?: string | null
     mimeType?: string | null
     fileSizeBytes?: number | null
+    fileScanStatus?: $Enums.FileScanStatus | null
+    scannedAt?: Date | string | null
+    scanNotes?: string | null
     gradeScore?: number | null
     feedbackText?: string | null
     submittedAt?: Date | string | null
@@ -15023,6 +15123,9 @@ export namespace Prisma {
     fileName?: NullableStringFieldUpdateOperationsInput | string | null
     mimeType?: NullableStringFieldUpdateOperationsInput | string | null
     fileSizeBytes?: NullableIntFieldUpdateOperationsInput | number | null
+    fileScanStatus?: NullableEnumFileScanStatusFieldUpdateOperationsInput | $Enums.FileScanStatus | null
+    scannedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scanNotes?: NullableStringFieldUpdateOperationsInput | string | null
     gradeScore?: NullableIntFieldUpdateOperationsInput | number | null
     feedbackText?: NullableStringFieldUpdateOperationsInput | string | null
     submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -15040,6 +15143,9 @@ export namespace Prisma {
     fileName?: NullableStringFieldUpdateOperationsInput | string | null
     mimeType?: NullableStringFieldUpdateOperationsInput | string | null
     fileSizeBytes?: NullableIntFieldUpdateOperationsInput | number | null
+    fileScanStatus?: NullableEnumFileScanStatusFieldUpdateOperationsInput | $Enums.FileScanStatus | null
+    scannedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scanNotes?: NullableStringFieldUpdateOperationsInput | string | null
     gradeScore?: NullableIntFieldUpdateOperationsInput | number | null
     feedbackText?: NullableStringFieldUpdateOperationsInput | string | null
     submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -15758,6 +15864,13 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
+  export type EnumFileScanStatusNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.FileScanStatus | EnumFileScanStatusFieldRefInput<$PrismaModel> | null
+    in?: $Enums.FileScanStatus[] | ListEnumFileScanStatusFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.FileScanStatus[] | ListEnumFileScanStatusFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumFileScanStatusNullableFilter<$PrismaModel> | $Enums.FileScanStatus | null
+  }
+
   export type DateTimeNullableFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -15783,6 +15896,9 @@ export namespace Prisma {
     fileName?: SortOrder
     mimeType?: SortOrder
     fileSizeBytes?: SortOrder
+    fileScanStatus?: SortOrder
+    scannedAt?: SortOrder
+    scanNotes?: SortOrder
     gradeScore?: SortOrder
     feedbackText?: SortOrder
     submittedAt?: SortOrder
@@ -15805,6 +15921,9 @@ export namespace Prisma {
     fileName?: SortOrder
     mimeType?: SortOrder
     fileSizeBytes?: SortOrder
+    fileScanStatus?: SortOrder
+    scannedAt?: SortOrder
+    scanNotes?: SortOrder
     gradeScore?: SortOrder
     feedbackText?: SortOrder
     submittedAt?: SortOrder
@@ -15822,6 +15941,9 @@ export namespace Prisma {
     fileName?: SortOrder
     mimeType?: SortOrder
     fileSizeBytes?: SortOrder
+    fileScanStatus?: SortOrder
+    scannedAt?: SortOrder
+    scanNotes?: SortOrder
     gradeScore?: SortOrder
     feedbackText?: SortOrder
     submittedAt?: SortOrder
@@ -15859,6 +15981,16 @@ export namespace Prisma {
     _sum?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedIntNullableFilter<$PrismaModel>
     _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type EnumFileScanStatusNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.FileScanStatus | EnumFileScanStatusFieldRefInput<$PrismaModel> | null
+    in?: $Enums.FileScanStatus[] | ListEnumFileScanStatusFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.FileScanStatus[] | ListEnumFileScanStatusFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumFileScanStatusNullableWithAggregatesFilter<$PrismaModel> | $Enums.FileScanStatus | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumFileScanStatusNullableFilter<$PrismaModel>
+    _max?: NestedEnumFileScanStatusNullableFilter<$PrismaModel>
   }
 
   export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -16749,6 +16881,10 @@ export namespace Prisma {
     divide?: number
   }
 
+  export type NullableEnumFileScanStatusFieldUpdateOperationsInput = {
+    set?: $Enums.FileScanStatus | null
+  }
+
   export type NullableDateTimeFieldUpdateOperationsInput = {
     set?: Date | string | null
   }
@@ -17049,6 +17185,13 @@ export namespace Prisma {
     not?: NestedEnumSubmissionStatusFilter<$PrismaModel> | $Enums.SubmissionStatus
   }
 
+  export type NestedEnumFileScanStatusNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.FileScanStatus | EnumFileScanStatusFieldRefInput<$PrismaModel> | null
+    in?: $Enums.FileScanStatus[] | ListEnumFileScanStatusFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.FileScanStatus[] | ListEnumFileScanStatusFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumFileScanStatusNullableFilter<$PrismaModel> | $Enums.FileScanStatus | null
+  }
+
   export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -17095,6 +17238,16 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedEnumFileScanStatusNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.FileScanStatus | EnumFileScanStatusFieldRefInput<$PrismaModel> | null
+    in?: $Enums.FileScanStatus[] | ListEnumFileScanStatusFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.FileScanStatus[] | ListEnumFileScanStatusFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumFileScanStatusNullableWithAggregatesFilter<$PrismaModel> | $Enums.FileScanStatus | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumFileScanStatusNullableFilter<$PrismaModel>
+    _max?: NestedEnumFileScanStatusNullableFilter<$PrismaModel>
   }
 
   export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -17349,6 +17502,9 @@ export namespace Prisma {
     fileName?: string | null
     mimeType?: string | null
     fileSizeBytes?: number | null
+    fileScanStatus?: $Enums.FileScanStatus | null
+    scannedAt?: Date | string | null
+    scanNotes?: string | null
     gradeScore?: number | null
     feedbackText?: string | null
     submittedAt?: Date | string | null
@@ -17366,6 +17522,9 @@ export namespace Prisma {
     fileName?: string | null
     mimeType?: string | null
     fileSizeBytes?: number | null
+    fileScanStatus?: $Enums.FileScanStatus | null
+    scannedAt?: Date | string | null
+    scanNotes?: string | null
     gradeScore?: number | null
     feedbackText?: string | null
     submittedAt?: Date | string | null
@@ -17579,6 +17738,9 @@ export namespace Prisma {
     fileName?: StringNullableFilter<"Submission"> | string | null
     mimeType?: StringNullableFilter<"Submission"> | string | null
     fileSizeBytes?: IntNullableFilter<"Submission"> | number | null
+    fileScanStatus?: EnumFileScanStatusNullableFilter<"Submission"> | $Enums.FileScanStatus | null
+    scannedAt?: DateTimeNullableFilter<"Submission"> | Date | string | null
+    scanNotes?: StringNullableFilter<"Submission"> | string | null
     gradeScore?: IntNullableFilter<"Submission"> | number | null
     feedbackText?: StringNullableFilter<"Submission"> | string | null
     submittedAt?: DateTimeNullableFilter<"Submission"> | Date | string | null
@@ -18074,6 +18236,9 @@ export namespace Prisma {
     fileName?: string | null
     mimeType?: string | null
     fileSizeBytes?: number | null
+    fileScanStatus?: $Enums.FileScanStatus | null
+    scannedAt?: Date | string | null
+    scanNotes?: string | null
     gradeScore?: number | null
     feedbackText?: string | null
     submittedAt?: Date | string | null
@@ -18091,6 +18256,9 @@ export namespace Prisma {
     fileName?: string | null
     mimeType?: string | null
     fileSizeBytes?: number | null
+    fileScanStatus?: $Enums.FileScanStatus | null
+    scannedAt?: Date | string | null
+    scanNotes?: string | null
     gradeScore?: number | null
     feedbackText?: string | null
     submittedAt?: Date | string | null
@@ -19029,6 +19197,9 @@ export namespace Prisma {
     fileName?: string | null
     mimeType?: string | null
     fileSizeBytes?: number | null
+    fileScanStatus?: $Enums.FileScanStatus | null
+    scannedAt?: Date | string | null
+    scanNotes?: string | null
     gradeScore?: number | null
     feedbackText?: string | null
     submittedAt?: Date | string | null
@@ -19116,6 +19287,9 @@ export namespace Prisma {
     fileName?: NullableStringFieldUpdateOperationsInput | string | null
     mimeType?: NullableStringFieldUpdateOperationsInput | string | null
     fileSizeBytes?: NullableIntFieldUpdateOperationsInput | number | null
+    fileScanStatus?: NullableEnumFileScanStatusFieldUpdateOperationsInput | $Enums.FileScanStatus | null
+    scannedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scanNotes?: NullableStringFieldUpdateOperationsInput | string | null
     gradeScore?: NullableIntFieldUpdateOperationsInput | number | null
     feedbackText?: NullableStringFieldUpdateOperationsInput | string | null
     submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -19133,6 +19307,9 @@ export namespace Prisma {
     fileName?: NullableStringFieldUpdateOperationsInput | string | null
     mimeType?: NullableStringFieldUpdateOperationsInput | string | null
     fileSizeBytes?: NullableIntFieldUpdateOperationsInput | number | null
+    fileScanStatus?: NullableEnumFileScanStatusFieldUpdateOperationsInput | $Enums.FileScanStatus | null
+    scannedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scanNotes?: NullableStringFieldUpdateOperationsInput | string | null
     gradeScore?: NullableIntFieldUpdateOperationsInput | number | null
     feedbackText?: NullableStringFieldUpdateOperationsInput | string | null
     submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -19149,6 +19326,9 @@ export namespace Prisma {
     fileName?: NullableStringFieldUpdateOperationsInput | string | null
     mimeType?: NullableStringFieldUpdateOperationsInput | string | null
     fileSizeBytes?: NullableIntFieldUpdateOperationsInput | number | null
+    fileScanStatus?: NullableEnumFileScanStatusFieldUpdateOperationsInput | $Enums.FileScanStatus | null
+    scannedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scanNotes?: NullableStringFieldUpdateOperationsInput | string | null
     gradeScore?: NullableIntFieldUpdateOperationsInput | number | null
     feedbackText?: NullableStringFieldUpdateOperationsInput | string | null
     submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -19419,6 +19599,9 @@ export namespace Prisma {
     fileName?: string | null
     mimeType?: string | null
     fileSizeBytes?: number | null
+    fileScanStatus?: $Enums.FileScanStatus | null
+    scannedAt?: Date | string | null
+    scanNotes?: string | null
     gradeScore?: number | null
     feedbackText?: string | null
     submittedAt?: Date | string | null
@@ -19461,6 +19644,9 @@ export namespace Prisma {
     fileName?: NullableStringFieldUpdateOperationsInput | string | null
     mimeType?: NullableStringFieldUpdateOperationsInput | string | null
     fileSizeBytes?: NullableIntFieldUpdateOperationsInput | number | null
+    fileScanStatus?: NullableEnumFileScanStatusFieldUpdateOperationsInput | $Enums.FileScanStatus | null
+    scannedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scanNotes?: NullableStringFieldUpdateOperationsInput | string | null
     gradeScore?: NullableIntFieldUpdateOperationsInput | number | null
     feedbackText?: NullableStringFieldUpdateOperationsInput | string | null
     submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -19478,6 +19664,9 @@ export namespace Prisma {
     fileName?: NullableStringFieldUpdateOperationsInput | string | null
     mimeType?: NullableStringFieldUpdateOperationsInput | string | null
     fileSizeBytes?: NullableIntFieldUpdateOperationsInput | number | null
+    fileScanStatus?: NullableEnumFileScanStatusFieldUpdateOperationsInput | $Enums.FileScanStatus | null
+    scannedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scanNotes?: NullableStringFieldUpdateOperationsInput | string | null
     gradeScore?: NullableIntFieldUpdateOperationsInput | number | null
     feedbackText?: NullableStringFieldUpdateOperationsInput | string | null
     submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -19494,6 +19683,9 @@ export namespace Prisma {
     fileName?: NullableStringFieldUpdateOperationsInput | string | null
     mimeType?: NullableStringFieldUpdateOperationsInput | string | null
     fileSizeBytes?: NullableIntFieldUpdateOperationsInput | number | null
+    fileScanStatus?: NullableEnumFileScanStatusFieldUpdateOperationsInput | $Enums.FileScanStatus | null
+    scannedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scanNotes?: NullableStringFieldUpdateOperationsInput | string | null
     gradeScore?: NullableIntFieldUpdateOperationsInput | number | null
     feedbackText?: NullableStringFieldUpdateOperationsInput | string | null
     submittedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null

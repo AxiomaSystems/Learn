@@ -181,6 +181,9 @@ exports.Prisma.SubmissionScalarFieldEnum = {
   fileName: 'fileName',
   mimeType: 'mimeType',
   fileSizeBytes: 'fileSizeBytes',
+  fileScanStatus: 'fileScanStatus',
+  scannedAt: 'scannedAt',
+  scanNotes: 'scanNotes',
   gradeScore: 'gradeScore',
   feedbackText: 'feedbackText',
   submittedAt: 'submittedAt',
@@ -278,6 +281,13 @@ exports.SubmissionStatus = exports.$Enums.SubmissionStatus = {
   DRAFT: 'DRAFT',
   SUBMITTED: 'SUBMITTED',
   RETURNED: 'RETURNED'
+};
+
+exports.FileScanStatus = exports.$Enums.FileScanStatus = {
+  PENDING_SCAN: 'PENDING_SCAN',
+  CLEAN: 'CLEAN',
+  QUARANTINED: 'QUARANTINED',
+  REJECTED: 'REJECTED'
 };
 
 exports.BookingStatus = exports.$Enums.BookingStatus = {

@@ -1,0 +1,15 @@
+environment                     = "dev"
+aws_region                      = "us-east-1"
+bucket_name                     = "axioma-learn-dev-files-example"
+storage_prefix                  = "submissions/"
+presigned_upload_ttl_seconds    = 600
+presigned_download_ttl_seconds  = 600
+enable_kms                      = false
+kms_key_arn                     = ""
+allow_force_destroy             = false
+draft_expiration_days           = 30
+noncurrent_version_expiration_days = 90
+
+tags = {
+  Owner = "platform-team"
+}

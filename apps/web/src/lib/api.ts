@@ -4,6 +4,7 @@ import type {
   EducatorClassesDirectory,
   EducatorReviewQueueSummary,
   EducatorSubmissionsSummary,
+  FileModerationQueue,
   StudentCourseworkDetail,
   StudentClassesDirectory,
   StudentHomeSummary,
@@ -404,6 +405,37 @@ export async function createStorageUploadUrl(input: {
         error instanceof Error
           ? error.message
           : "Unknown storage presign connectivity error",
+    };
+  }
+}
+
+export async function getFileModerationQueue(): Promise<{
+  data: FileModerationQueue | null;
+  error: string | null;
+}> {
+  try {
+    const response = await fetch(`${getApiBaseUrl()}/api/admin/file-moderation`, {
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      return {
+        data: null,
+        error: `File moderation queue returned ${response.status}`,
+      };
+    }
+
+    return {
+      data: (await response.json()) as FileModerationQueue,
+      error: null,
+    };
+  } catch (error) {
+    return {
+      data: null,
+      error:
+        error instanceof Error
+          ? error.message
+          : "Unknown file moderation queue connectivity error",
     };
   }
 }

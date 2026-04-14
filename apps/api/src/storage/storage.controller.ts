@@ -1,4 +1,10 @@
-import { BadRequestException, Body, Controller, Post } from "@nestjs/common";
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  Post,
+} from "@nestjs/common";
 import { z } from "zod";
 import { StorageService } from "./storage.service";
 
@@ -12,6 +18,11 @@ const presignUploadSchema = z.object({
 export class StorageController {
   constructor(private readonly storageService: StorageService) {}
 
+  @Get("security-profile")
+  getSecurityProfile() {
+    return this.storageService.getSecurityProfile();
+  }
+
   @Post("presign-upload")
   async presignUpload(@Body() body: unknown) {
     const parsedBody = presignUploadSchema.safeParse(body);
@@ -20,18 +31,24 @@ export class StorageController {
       throw new BadRequestException(parsedBody.error.flatten());
     }
 
-    const upload = await this.storageService.createUploadUrl(parsedBody.data);
+    try {
+      const upload = await this.storageService.createUploadUrl(parsedBody.data);
 
-    if (!upload) {
+      if (!upload) {
+        throw new BadRequestException(
+          "S3 storage is not configured yet. Set the required AWS environment variables first.",
+        );
+      }
+
+      return {
+        ok: true,
+        storageKey: parsedBody.data.storageKey,
+        ...upload,
+      };
+    } catch (error) {
       throw new BadRequestException(
-        "S3 storage is not configured yet. Set the required AWS environment variables first.",
+        error instanceof Error ? error.message : "Storage presign failed.",
       );
     }
-
-    return {
-      ok: true,
-      storageKey: parsedBody.data.storageKey,
-      ...upload,
-    };
   }
 }

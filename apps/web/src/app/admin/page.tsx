@@ -5,6 +5,7 @@ const adminCards = [
   "Tenant setup, roles, and onboarding status",
   "Institution integrations and sync visibility",
   "Operational posture across auth, observability, and environment state",
+  "Manual file moderation queue for pending, quarantined, and rejected uploads",
 ];
 
 export default async function AdminPage() {
@@ -20,7 +21,7 @@ export default async function AdminPage() {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+          gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
           gap: 16,
         }}
       >
@@ -41,4 +42,3 @@ export default async function AdminPage() {
     </AppShell>
   );
 }
-

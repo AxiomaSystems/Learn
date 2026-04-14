@@ -4,6 +4,10 @@ import { getAuthSession } from "../../../../lib/auth";
 import { getStudentCourseworkDetail } from "../../../../lib/api";
 import { submitStudentCourseworkFileHandoff } from "./actions";
 
+function formatScanStatus(status: string) {
+  return status.replaceAll("_", " ");
+}
+
 export default async function StudentCourseworkDetailPage({
   params,
 }: {
@@ -121,11 +125,25 @@ export default async function StudentCourseworkDetailPage({
                         ? `${data.submission.file.fileName} | ${data.submission.file.mimeType} | ${data.submission.file.fileSizeBytes.toLocaleString()} bytes`
                         : "No file metadata stored yet."}
                     </p>
+                    {data.submission.file ? (
+                      <p style={{ margin: "8px 0 0", color: "var(--muted)" }}>
+                        Scan state: {formatScanStatus(data.submission.file.scanStatus)}
+                      </p>
+                    ) : null}
+                    {data.submission.file?.scanNotes ? (
+                      <p style={{ margin: "8px 0 0", color: "var(--muted)" }}>
+                        Moderation note: {data.submission.file.scanNotes}
+                      </p>
+                    ) : null}
                     {data.submission.file?.downloadUrl ? (
                       <p style={{ margin: "10px 0 0" }}>
                         <a href={data.submission.file.downloadUrl} target="_blank">
                           Open signed file link
                         </a>
+                      </p>
+                    ) : data.submission.file ? (
+                      <p style={{ margin: "10px 0 0", color: "var(--muted)" }}>
+                        Download will unlock after the file is marked clean.
                       </p>
                     ) : null}
                   </div>
@@ -171,7 +189,8 @@ export default async function StudentCourseworkDetailPage({
               <h3 style={{ marginTop: 0, marginBottom: 8 }}>File handoff</h3>
               <p style={{ margin: 0, color: "var(--muted)" }}>
                 This flow now uploads the selected file to a private S3 object path
-                using a presigned URL and then records the handoff in the platform.
+                using a presigned URL, records the handoff in the platform, and
+                resets the file to pending moderation until it is marked clean.
               </p>
             </div>
 

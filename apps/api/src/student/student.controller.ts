@@ -8,6 +8,7 @@ import {
   Put,
 } from "@nestjs/common";
 import type {
+  FileScanStatus,
   StudentCourseworkDetail,
   StudentClassesDirectory,
   StudentSubmissionHandoffResult,
@@ -111,6 +112,7 @@ const FALLBACK_STUDENT_SUBMISSIONS: StudentSubmissionsSummary = {
       feedbackText:
         "Strong grasp of signal amplification. Tighten the connection between receptor behavior and the downstream pathway in your final explanation.",
       gradedAt: new Date(Date.now() - 1000 * 60 * 60 * 6).toISOString(),
+      fileScanStatus: "clean",
     },
     {
       submissionId: "44444444-4444-4444-4444-444444444442",
@@ -126,6 +128,7 @@ const FALLBACK_STUDENT_SUBMISSIONS: StudentSubmissionsSummary = {
       gradeScore: null,
       feedbackText: null,
       gradedAt: null,
+      fileScanStatus: "pending_scan",
     },
   ],
 };
@@ -155,6 +158,9 @@ const FALLBACK_STUDENT_COURSEWORK_DETAIL: StudentCourseworkDetail = {
         mimeType:
           "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         fileSizeBytes: 184210,
+        scanStatus: "pending_scan",
+        scannedAt: null,
+        scanNotes: "Waiting for manual moderation.",
         downloadUrl: null,
       },
   },
@@ -185,12 +191,24 @@ function toSubmissionLifecycleStatus(
   return "returned";
 }
 
+function toFileScanStatus(
+  status: "PENDING_SCAN" | "CLEAN" | "QUARANTINED" | "REJECTED" | null | undefined,
+): FileScanStatus {
+  if (status === "CLEAN") return "clean";
+  if (status === "QUARANTINED") return "quarantined";
+  if (status === "REJECTED") return "rejected";
+  return "pending_scan";
+}
+
 function toSubmissionFileSummary(
   submission: {
     storageKey: string | null;
     fileName: string | null;
     mimeType: string | null;
     fileSizeBytes: number | null;
+    fileScanStatus: "PENDING_SCAN" | "CLEAN" | "QUARANTINED" | "REJECTED" | null;
+    scannedAt?: Date | null;
+    scanNotes?: string | null;
   },
 ) {
   if (
@@ -207,6 +225,9 @@ function toSubmissionFileSummary(
     fileName: submission.fileName,
     mimeType: submission.mimeType,
     fileSizeBytes: submission.fileSizeBytes,
+    scanStatus: toFileScanStatus(submission.fileScanStatus),
+    scannedAt: submission.scannedAt?.toISOString() ?? null,
+    scanNotes: submission.scanNotes ?? null,
     downloadUrl: null,
   };
 }
@@ -411,6 +432,7 @@ export class StudentController {
           gradeScore: submission.gradeScore,
           feedbackText: submission.feedbackText,
           gradedAt: submission.gradedAt?.toISOString() ?? null,
+          fileScanStatus: toFileScanStatus(submission.fileScanStatus),
         })),
       };
     } catch {
@@ -462,7 +484,9 @@ export class StudentController {
       const submission = coursework.submissions[0] ?? null;
       const file = submission ? toSubmissionFileSummary(submission) : null;
       const signedFile =
-        file && this.storageService.isConfigured()
+        file &&
+        file.scanStatus === "clean" &&
+        this.storageService.isConfigured()
           ? {
               ...file,
               downloadUrl:
@@ -562,6 +586,9 @@ export class StudentController {
             fileName: parsedBody.data.fileName,
             mimeType: parsedBody.data.mimeType,
             fileSizeBytes: parsedBody.data.fileSizeBytes,
+            fileScanStatus: "PENDING_SCAN",
+            scannedAt: null,
+            scanNotes: "Waiting for manual moderation.",
             submittedAt:
               nextStatus === "SUBMITTED" ? new Date() : existingSubmission.submittedAt,
           },
@@ -575,6 +602,9 @@ export class StudentController {
             fileName: parsedBody.data.fileName,
             mimeType: parsedBody.data.mimeType,
             fileSizeBytes: parsedBody.data.fileSizeBytes,
+            fileScanStatus: "PENDING_SCAN",
+            scannedAt: null,
+            scanNotes: "Waiting for manual moderation.",
             submittedAt: nextStatus === "SUBMITTED" ? new Date() : null,
           },
         });
@@ -594,6 +624,7 @@ export class StudentController {
           fileName: parsedBody.data.fileName,
           mimeType: parsedBody.data.mimeType,
           fileSizeBytes: parsedBody.data.fileSizeBytes,
+          fileScanStatus: "PENDING_SCAN",
           handedOffAt: new Date().toISOString(),
         },
       },

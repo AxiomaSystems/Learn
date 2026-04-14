@@ -3,6 +3,10 @@ import { AppShell } from "../../../../components/app-shell";
 import { getAuthSession } from "../../../../lib/auth";
 import { getEducatorCourseworkDetail } from "../../../../lib/api";
 
+function formatScanStatus(status: string) {
+  return status.replaceAll("_", " ");
+}
+
 export default async function EducatorCourseworkDetailPage({
   params,
 }: {
@@ -98,6 +102,16 @@ export default async function EducatorCourseworkDetailPage({
                   </p>
                   {submission.file ? (
                     <p style={{ margin: "8px 0 0", color: "var(--muted)" }}>
+                      Scan state: {formatScanStatus(submission.file.scanStatus)}
+                    </p>
+                  ) : null}
+                  {submission.file?.scanNotes ? (
+                    <p style={{ margin: "8px 0 0", color: "var(--muted)" }}>
+                      Moderation note: {submission.file.scanNotes}
+                    </p>
+                  ) : null}
+                  {submission.file ? (
+                    <p style={{ margin: "8px 0 0", color: "var(--muted)" }}>
                       Storage key: {submission.file.storageKey}
                     </p>
                   ) : null}
@@ -106,6 +120,10 @@ export default async function EducatorCourseworkDetailPage({
                       <a href={submission.file.downloadUrl} target="_blank">
                         Open signed file link
                       </a>
+                    </p>
+                  ) : submission.file ? (
+                    <p style={{ margin: "10px 0 0", color: "var(--muted)" }}>
+                      File access stays blocked until moderation marks it clean.
                     </p>
                   ) : null}
                 </div>
@@ -126,6 +144,22 @@ export default async function EducatorCourseworkDetailPage({
                       "No feedback written yet. Use the educator submission review route to return this work."}
                   </p>
                 </div>
+                {submission.file && submission.file.scanStatus !== "clean" ? (
+                  <div
+                    style={{
+                      marginTop: 14,
+                      padding: 16,
+                      borderRadius: 18,
+                      border: "1px solid var(--line)",
+                      background: "#fff8f3",
+                    }}
+                  >
+                    <p style={{ margin: 0, color: "var(--muted)" }}>
+                      Review is blocked until this file is marked clean in admin
+                      moderation.
+                    </p>
+                  </div>
+                ) : null}
               </div>
             ))}
           </div>

@@ -4,6 +4,7 @@ export * from "./models/classes-directory";
 export * from "./models/coursework";
 export * from "./models/coursework-handoff";
 export * from "./models/educator-review";
+export * from "./models/file-moderation";
 export * from "./models/institution";
 export * from "./models/platform";
 export * from "./models/student-home";

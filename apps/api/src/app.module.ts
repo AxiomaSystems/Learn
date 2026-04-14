@@ -1,5 +1,6 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
+import { AdminController } from "./admin/admin.controller";
 import { AuthController } from "./auth/auth.controller";
 import { HealthController } from "./common/health/health.controller";
 import { PrismaService } from "./db/prisma.service";
@@ -15,6 +16,7 @@ import { StudentController } from "./student/student.controller";
     }),
   ],
     controllers: [
+      AdminController,
       HealthController,
       AuthController,
       StudentController,

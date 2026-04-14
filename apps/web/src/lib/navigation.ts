@@ -25,5 +25,6 @@ export const navByView: Record<PortalView, NavItem[]> = {
     { href: "/admin", label: "Tenant home" },
     { href: "/admin/institutions", label: "Institution" },
     { href: "/admin/integrations", label: "Integrations" },
+    { href: "/admin/file-moderation", label: "File moderation" },
   ],
 };

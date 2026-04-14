@@ -233,6 +233,15 @@ How the app now uses storage:
 - object keys are still tracked in Postgres as `storageKey`
 - student and educator views receive short-lived signed download links when storage is configured
 
+Recommended hardening before production:
+
+- keep the bucket private and block all public access
+- prefer SSE-KMS if your AWS setup is ready for it; otherwise use SSE-S3 as a baseline
+- keep presigned URLs short-lived; the app defaults to 10 minutes for both upload and download
+- keep object keys under a controlled tenant prefix such as `submissions/`
+- use an IAM principal limited to `s3:PutObject` and `s3:GetObject` on the exact bucket/prefix
+- add lifecycle rules for abandoned drafts and long-tail retention later
+
 ### Langfuse
 
 What to create:

@@ -49,6 +49,11 @@ export default async function EducatorSubmissionsPage() {
                   <p style={{ margin: "8px 0 0", color: "var(--muted)" }}>
                     Current status: {submission.status}
                   </p>
+                  {submission.fileScanStatus ? (
+                    <p style={{ margin: "8px 0 0", color: "var(--muted)" }}>
+                      File scan state: {submission.fileScanStatus.replaceAll("_", " ")}
+                    </p>
+                  ) : null}
                   <p style={{ margin: "8px 0 0", color: "var(--muted)" }}>
                     Current grade:{" "}
                     {submission.gradeScore != null
@@ -77,6 +82,23 @@ export default async function EducatorSubmissionsPage() {
                         "No feedback written yet. Use the review form to return this work with a score and note."}
                     </p>
                   </div>
+                  {submission.fileScanStatus &&
+                  submission.fileScanStatus !== "clean" ? (
+                    <div
+                      style={{
+                        marginTop: 14,
+                        padding: 16,
+                        borderRadius: 18,
+                        border: "1px solid var(--line)",
+                        background: "#fff8f3",
+                      }}
+                    >
+                      <p style={{ margin: 0, color: "var(--muted)" }}>
+                        Review is blocked until admin moderation marks the file
+                        clean.
+                      </p>
+                    </div>
+                  ) : null}
                 </div>
 
                 <form
@@ -106,9 +128,13 @@ export default async function EducatorSubmissionsPage() {
                         borderRadius: 14,
                         border: "1px solid var(--line)",
                         padding: "12px 14px",
-                        background: "white",
-                      }}
-                    >
+                      background: "white",
+                    }}
+                    disabled={
+                      submission.fileScanStatus != null &&
+                      submission.fileScanStatus !== "clean"
+                    }
+                  >
                       <option value="DRAFT">Draft</option>
                       <option value="SUBMITTED">Submitted</option>
                       <option value="RETURNED">Returned</option>
@@ -128,9 +154,13 @@ export default async function EducatorSubmissionsPage() {
                         borderRadius: 14,
                         border: "1px solid var(--line)",
                         padding: "12px 14px",
-                        background: "white",
-                      }}
-                    />
+                      background: "white",
+                    }}
+                    disabled={
+                      submission.fileScanStatus != null &&
+                      submission.fileScanStatus !== "clean"
+                    }
+                  />
                   </label>
 
                   <label style={{ display: "grid", gap: 6 }}>
@@ -147,6 +177,10 @@ export default async function EducatorSubmissionsPage() {
                         background: "white",
                         resize: "vertical",
                       }}
+                      disabled={
+                        submission.fileScanStatus != null &&
+                        submission.fileScanStatus !== "clean"
+                      }
                     />
                   </label>
 
@@ -159,6 +193,10 @@ export default async function EducatorSubmissionsPage() {
                       background: "var(--card)",
                       cursor: "pointer",
                     }}
+                    disabled={
+                      submission.fileScanStatus != null &&
+                      submission.fileScanStatus !== "clean"
+                    }
                   >
                     Save review
                   </button>

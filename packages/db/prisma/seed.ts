@@ -105,6 +105,9 @@ async function main() {
       fileName: "reading-4-2-response.pdf",
       mimeType: "application/pdf",
       fileSizeBytes: 248320,
+      fileScanStatus: "CLEAN",
+      scannedAt: new Date(Date.now() - 1000 * 60 * 60 * 20),
+      scanNotes: "Manual moderation marked this file as clean.",
       submittedAt: new Date(Date.now() - 1000 * 60 * 60 * 30),
       gradeScore: 94,
       feedbackText:
@@ -120,6 +123,9 @@ async function main() {
       fileName: "reading-4-2-response.pdf",
       mimeType: "application/pdf",
       fileSizeBytes: 248320,
+      fileScanStatus: "CLEAN",
+      scannedAt: new Date(Date.now() - 1000 * 60 * 60 * 20),
+      scanNotes: "Manual moderation marked this file as clean.",
       submittedAt: new Date(Date.now() - 1000 * 60 * 60 * 30),
       gradeScore: 94,
       feedbackText:
@@ -137,6 +143,9 @@ async function main() {
       mimeType:
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       fileSizeBytes: 184210,
+      fileScanStatus: "PENDING_SCAN",
+      scannedAt: null,
+      scanNotes: "Waiting for manual moderation.",
       submittedAt: new Date(Date.now() - 1000 * 60 * 60 * 2),
       gradeScore: null,
       feedbackText: null,
@@ -152,6 +161,9 @@ async function main() {
       mimeType:
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       fileSizeBytes: 184210,
+      fileScanStatus: "PENDING_SCAN",
+      scannedAt: null,
+      scanNotes: "Waiting for manual moderation.",
       submittedAt: new Date(Date.now() - 1000 * 60 * 60 * 2),
     },
   });

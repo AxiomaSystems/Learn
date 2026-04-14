@@ -15,6 +15,14 @@ function sanitizeFileName(value: string) {
     .replace(/-+/g, "-");
 }
 
+function sanitizeStorageKeySegment(value: string) {
+  return value
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9/_-]+/g, "-")
+    .replace(/-+/g, "-");
+}
+
 export async function submitStudentCourseworkFileHandoff(formData: FormData) {
   const courseworkId = String(formData.get("courseworkId") ?? "").trim();
   const status = String(formData.get("status") ?? "SUBMITTED").trim().toUpperCase();
@@ -29,7 +37,8 @@ export async function submitStudentCourseworkFileHandoff(formData: FormData) {
   }
 
   const normalizedFileName = sanitizeFileName(file.name);
-  const storageKey = `submissions/${courseworkId}/${Date.now()}-${normalizedFileName}`;
+  const safeCourseworkId = sanitizeStorageKeySegment(courseworkId);
+  const storageKey = `submissions/${safeCourseworkId}/${Date.now()}-${normalizedFileName}`;
   const presignedUpload = await createStorageUploadUrl({
     storageKey,
     fileName: file.name,

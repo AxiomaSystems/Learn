@@ -1,11 +1,21 @@
 import { z } from "zod";
 import { submissionLifecycleStatusSchema } from "./submission-review";
 
+export const fileScanStatusSchema = z.enum([
+  "pending_scan",
+  "clean",
+  "quarantined",
+  "rejected",
+]);
+
 export const submissionFileSummarySchema = z.object({
   storageKey: z.string().min(1),
   fileName: z.string().min(1),
   mimeType: z.string().min(1),
   fileSizeBytes: z.number().int().nonnegative(),
+  scanStatus: fileScanStatusSchema,
+  scannedAt: z.string().datetime().nullable(),
+  scanNotes: z.string().nullable(),
   downloadUrl: z.string().url().nullable().optional(),
 });
 
@@ -72,6 +82,7 @@ export const studentSubmissionHandoffResultSchema = z.object({
 });
 
 export type SubmissionFileSummary = z.infer<typeof submissionFileSummarySchema>;
+export type FileScanStatus = z.infer<typeof fileScanStatusSchema>;
 export type CourseworkHandoffSubmission = z.infer<
   typeof courseworkHandoffSubmissionSchema
 >;

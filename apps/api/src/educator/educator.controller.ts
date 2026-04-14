@@ -10,6 +10,7 @@ import {
 import type {
   EducatorCourseworkDetail,
   EducatorClassesDirectory,
+  FileScanStatus,
   EducatorReviewQueueSummary,
   EducatorSubmissionsSummary,
   SubmissionLifecycleStatus,
@@ -102,6 +103,7 @@ const FALLBACK_EDUCATOR_SUBMISSIONS: EducatorSubmissionsSummary = {
       feedbackText: null,
       gradedAt: null,
       reviewPriority: "high",
+      fileScanStatus: "pending_scan",
     },
     {
       submissionId: "44444444-4444-4444-4444-444444444441",
@@ -121,6 +123,7 @@ const FALLBACK_EDUCATOR_SUBMISSIONS: EducatorSubmissionsSummary = {
         "Strong grasp of signal amplification. Tighten the connection between receptor behavior and the downstream pathway in your final explanation.",
       gradedAt: new Date(Date.now() - 1000 * 60 * 60 * 6).toISOString(),
       reviewPriority: "medium",
+      fileScanStatus: "clean",
     },
   ],
 };
@@ -152,6 +155,9 @@ const FALLBACK_EDUCATOR_COURSEWORK_DETAIL: EducatorCourseworkDetail = {
         mimeType:
           "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         fileSizeBytes: 184210,
+        scanStatus: "pending_scan",
+        scannedAt: null,
+        scanNotes: "Waiting for manual moderation.",
         downloadUrl: null,
       },
     },
@@ -193,12 +199,24 @@ function toSubmissionLifecycleStatus(
   return "returned";
 }
 
+function toFileScanStatus(
+  status: "PENDING_SCAN" | "CLEAN" | "QUARANTINED" | "REJECTED" | null | undefined,
+): FileScanStatus {
+  if (status === "CLEAN") return "clean";
+  if (status === "QUARANTINED") return "quarantined";
+  if (status === "REJECTED") return "rejected";
+  return "pending_scan";
+}
+
 function toSubmissionFileSummary(
   submission: {
     storageKey: string | null;
     fileName: string | null;
     mimeType: string | null;
     fileSizeBytes: number | null;
+    fileScanStatus: "PENDING_SCAN" | "CLEAN" | "QUARANTINED" | "REJECTED" | null;
+    scannedAt?: Date | null;
+    scanNotes?: string | null;
   },
 ) {
   if (
@@ -215,6 +233,9 @@ function toSubmissionFileSummary(
     fileName: submission.fileName,
     mimeType: submission.mimeType,
     fileSizeBytes: submission.fileSizeBytes,
+    scanStatus: toFileScanStatus(submission.fileScanStatus),
+    scannedAt: submission.scannedAt?.toISOString() ?? null,
+    scanNotes: submission.scanNotes ?? null,
     downloadUrl: null,
   };
 }
@@ -451,6 +472,7 @@ export class EducatorController {
             feedbackText: submission.feedbackText,
             gradedAt: submission.gradedAt?.toISOString() ?? null,
             reviewPriority,
+            fileScanStatus: toFileScanStatus(submission.fileScanStatus),
           };
         }),
       };
@@ -503,6 +525,15 @@ export class EducatorController {
     if (existingSubmission.coursework.class.educatorId !== educator.id) {
       throw new BadRequestException(
         "This educator cannot review submissions outside their classes.",
+      );
+    }
+
+    if (
+      existingSubmission.storageKey &&
+      existingSubmission.fileScanStatus !== "CLEAN"
+    ) {
+      throw new BadRequestException(
+        "This submission cannot be reviewed until the attached file is marked clean.",
       );
     }
 
@@ -602,7 +633,9 @@ export class EducatorController {
         coursework.submissions.map(async (submission) => {
           const file = toSubmissionFileSummary(submission);
           const signedFile =
-            file && this.storageService.isConfigured()
+            file &&
+            file.scanStatus === "clean" &&
+            this.storageService.isConfigured()
               ? {
                   ...file,
                   downloadUrl:

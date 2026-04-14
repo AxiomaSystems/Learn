@@ -46,6 +46,11 @@ export default async function StudentSubmissionsPage() {
                   <p style={{ margin: "8px 0 0", color: "var(--muted)" }}>
                     Status: {submission.status}
                   </p>
+                  {submission.fileScanStatus ? (
+                    <p style={{ margin: "8px 0 0", color: "var(--muted)" }}>
+                      File scan state: {submission.fileScanStatus.replaceAll("_", " ")}
+                    </p>
+                  ) : null}
                 </div>
 
                 <div style={{ minWidth: 220 }}>
@@ -85,6 +90,23 @@ export default async function StudentSubmissionsPage() {
                     "No written feedback yet. Once the educator returns this submission, the review note will appear here."}
                 </p>
               </div>
+              {submission.fileScanStatus &&
+              submission.fileScanStatus !== "clean" ? (
+                <div
+                  style={{
+                    marginTop: 16,
+                    padding: 16,
+                    borderRadius: 18,
+                    border: "1px solid var(--line)",
+                    background: "#fff8f3",
+                  }}
+                >
+                  <p style={{ margin: 0, color: "var(--muted)" }}>
+                    Your file is still in moderation. Downloads and educator review
+                    stay blocked until it is marked clean.
+                  </p>
+                </div>
+              ) : null}
             </div>
           ))}
         </div>
