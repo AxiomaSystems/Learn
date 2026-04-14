@@ -10,6 +10,7 @@ import {
 import type { FileModerationQueue, FileScanStatus } from "@axioma/domain";
 import { z } from "zod";
 import { PrismaService } from "../db/prisma.service";
+import { FileScanService } from "../file-scan/file-scan.service";
 
 const FALLBACK_FILE_MODERATION_QUEUE: FileModerationQueue = {
   source: "fallback",
@@ -51,7 +52,10 @@ function toFileScanStatus(
 
 @Controller("admin")
 export class AdminController {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly fileScanService: FileScanService,
+  ) {}
 
   @Get("file-moderation")
   async getFileModerationQueue(): Promise<FileModerationQueue> {
@@ -187,6 +191,27 @@ export class AdminController {
         },
       },
     });
+
+    if (parsedBody.data.scanStatus === "PENDING_SCAN") {
+      const queued = await this.fileScanService.enqueueSubmissionScan({
+        submissionId: updatedSubmission.id,
+        institutionId: submission.coursework.class.institutionId,
+        requestedByUserId: actor?.id ?? submission.studentId,
+        trigger: "admin_rescan",
+      });
+
+      if (!queued) {
+        await this.prisma.submission.update({
+          where: {
+            id: updatedSubmission.id,
+          },
+          data: {
+            scanNotes:
+              "Automatic rescanning is unavailable. Manual moderation is still required.",
+          },
+        });
+      }
+    }
 
     return {
       ok: true,

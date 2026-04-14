@@ -5,6 +5,7 @@ import { AuthController } from "./auth/auth.controller";
 import { HealthController } from "./common/health/health.controller";
 import { PrismaService } from "./db/prisma.service";
 import { EducatorController } from "./educator/educator.controller";
+import { FileScanService } from "./file-scan/file-scan.service";
 import { StorageController } from "./storage/storage.controller";
 import { StorageService } from "./storage/storage.service";
 import { StudentController } from "./student/student.controller";
@@ -23,6 +24,6 @@ import { StudentController } from "./student/student.controller";
       EducatorController,
       StorageController,
     ],
-  providers: [PrismaService, StorageService],
+  providers: [PrismaService, StorageService, FileScanService],
 })
 export class AppModule {}

@@ -19,6 +19,7 @@ import type {
 } from "@axioma/domain";
 import { z } from "zod";
 import { PrismaService } from "../db/prisma.service";
+import { FileScanService } from "../file-scan/file-scan.service";
 import { StorageService } from "../storage/storage.service";
 
 const FALLBACK_STUDENT_HOME: StudentHomeSummary = {
@@ -236,6 +237,7 @@ function toSubmissionFileSummary(
 export class StudentController {
   constructor(
     private readonly prisma: PrismaService,
+    private readonly fileScanService: FileScanService,
     private readonly storageService: StorageService,
   ) {}
 
@@ -629,6 +631,24 @@ export class StudentController {
         },
       },
     });
+
+    const queued = await this.fileScanService.enqueueSubmissionScan({
+      submissionId: upsertedSubmission.id,
+      institutionId: student.institutionId,
+      requestedByUserId: student.id,
+      trigger: "handoff",
+    });
+
+    if (!queued) {
+      await this.prisma.submission.update({
+        where: {
+          id: upsertedSubmission.id,
+        },
+        data: {
+          scanNotes: "Automatic scanning is unavailable. Requires manual moderation.",
+        },
+      });
+    }
 
     return {
       ok: true,
