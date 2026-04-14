@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
+    "allowJs": false,
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "baseUrl": ".",
+    "paths": {
+      "@axioma/ui/*": ["packages/ui/src/*"],
+      "@axioma/domain/*": ["packages/domain/src/*"],
+      "@axioma/ai/*": ["packages/ai/src/*"],
+      "@axioma/db/*": ["packages/db/src/*"],
+      "@axioma/integrations/*": ["packages/integrations/src/*"]
+    }
+  }
+}
+

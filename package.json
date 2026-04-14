@@ -1,0 +1,46 @@
+{
+  "name": "axioma-learn",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@10.8.0",
+  "engines": {
+    "node": ">=22.0.0",
+    "pnpm": ">=10.0.0"
+  },
+  "scripts": {
+    "setup": "pnpm install && pnpm docker:up && pnpm db:generate",
+    "dev": "turbo dev",
+    "dev:all": "pnpm docker:up && turbo dev",
+    "dev:web": "pnpm --filter @axioma/web dev",
+    "dev:api": "pnpm --filter @axioma/api dev",
+    "build": "turbo build",
+    "build:web": "pnpm --filter @axioma/web build",
+    "build:api": "pnpm --filter @axioma/api build",
+    "lint": "turbo lint",
+    "lint:web": "pnpm --filter @axioma/web lint",
+    "lint:api": "pnpm --filter @axioma/api lint",
+    "test": "turbo test",
+    "test:web": "pnpm --filter @axioma/web test",
+    "test:api": "pnpm --filter @axioma/api test",
+    "typecheck": "turbo typecheck",
+    "typecheck:web": "pnpm --filter @axioma/web typecheck",
+    "typecheck:api": "pnpm --filter @axioma/api typecheck",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "db:generate": "pnpm --filter @axioma/db db:generate",
+    "db:migrate": "pnpm --filter @axioma/db db:migrate",
+    "db:push": "pnpm --filter @axioma/db db:push",
+    "db:seed": "pnpm --filter @axioma/db db:seed",
+    "db:studio": "pnpm --filter @axioma/db exec prisma studio",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "docker:logs": "docker compose logs -f",
+    "clean": "powershell -Command \"if (Test-Path .turbo) { Remove-Item -Recurse -Force .turbo }; Get-ChildItem -Recurse -Directory -Filter node_modules | Remove-Item -Recurse -Force; Get-ChildItem -Recurse -Directory -Include dist,.next,coverage | Remove-Item -Recurse -Force\""
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.10",
+    "prettier": "^3.5.3",
+    "turbo": "^2.5.0",
+    "typescript": "^5.8.2"
+  }
+}
